@@ -5,14 +5,14 @@
 	$searchResults = "";
 	$searchCount = 0;
 
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
-	if ($conn->connect_error) 
+	$connection = createConnection();
+	if ($connection->connect_error)
 	{
-		returnWithError( $conn->connect_error );
+		returnWithError( $connection->connect_error );
 	} 
 	else
 	{
-		$stmt = $conn->prepare("select Name from Colors where Name like ? and UserID=?");
+		$stmt = $connection->prepare("select Name from Colors where Name like ? and UserID=?");
 		$colorName = "%" . $inData["search"] . "%";
 		$stmt->bind_param("ss", $colorName, $inData["userId"]);
 		$stmt->execute();
@@ -39,23 +39,12 @@
 		}
 		
 		$stmt->close();
-		$conn->close();
-	}
-
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
-
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
+		$connection->close();
 	}
 	
-	function returnWithError( $err )
+	function returnWithError($error )
 	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $error . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
