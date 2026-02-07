@@ -1,12 +1,10 @@
 
 <?php
 
+	require_once('IO.php');
+
 	$inData = getRequestInfo();
 	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
-
 	$connection = createConnection();
 	if( $connection->connect_error )
 	{
@@ -14,14 +12,21 @@
 	}
 	else
 	{
-		$statement = $connection->prepare("SELECT ID,firstName,lastName FROM Users WHERE Login=? AND Password =?");
-		$statement->bind_param("ss", $inData["login"], $inData["password"]);
+		$statement = $connection->prepare("SELECT ID,firstName,lastName, Password FROM Users WHERE Login=?");
+		$statement->bind_param("s", $inData["login"]);
 		$statement->execute();
 		$result = $statement->get_result();
 
 		if( $row = $result->fetch_assoc()  )
 		{
-			returnWithInfo( $row['firstName'], $row['lastName'], $row['ID'] );
+			if (password_verify($inData["password"], $row['Password'])) 
+			{
+                returnWithInfo($row['firstName'], $row['lastName'], $row['ID']);
+            } 
+			else 
+			{
+                returnWithError("Invalid Password");
+            }		
 		}
 		else
 		{
