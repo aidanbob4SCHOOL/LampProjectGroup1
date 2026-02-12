@@ -1,185 +1,398 @@
+//Login Page Function (Switch between Login and Signup)
+const tabs = document.querySelectorAll(".tab");
+const forms = document.querySelectorAll(".form");
+
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        const target = tab.dataset.target;
+
+        // Tabs
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        // Forms
+        forms.forEach(form => {
+            form.classList.toggle("active", form.id === target);
+        });
+    });
+});
+
+//username message stuff
+let userform = document.getElementById("username");
+let lettInput = document.getElementById("userLett");
+let lenInput = document.getElementById("userLen");
+let hypInput = document.getElementById("userHyp");
+let undInput = document.getElementById("userUnd");
+
+//username message displays
+userform.onfocus = function () {
+document.getElementById("explanationUser").style.display = "block";
+};
+
+//username message goes away
+userform.onblur = function () {
+document.getElementById("explanationUser").style.display = "none";
+};
+
+//username validation
+userform.onkeyup = function () {
+    var nums = /[0-9]/g;
+    var lett = /[a-zA-Z]/g;
+    var hyp = /[-]/g;
+    var und = /[_]/g;
+
+    //check length
+    if ((userform.value.length >= 2 && userform.value.length <= 30)) {
+      lenInput.classList.remove("invalid");
+      lenInput.classList.add("valid");
+
+    }
+
+    else {
+      lenInput.classList.remove("valid");
+      lenInput.classList.add("invalid");
+
+    }
+
+    //check letters
+    if (userform.value.match(lett) || userform.value.match(nums)) {
+
+      lettInput.classList.remove("invalid");
+      lettInput.classList.add("valid");
+    }
+
+    else {
+
+      lettInput.classList.remove("valid");
+      lettInput.classList.add("invalid");
+    }
+
+    //check hyphens
+    if (userform.value.match(hyp)) {
+      hypInput.classList.remove("opt");
+      hypInput.classList.add("valid");
+    }
+
+    else {
+      hypInput.classList.remove("valid");
+      hypInput.classList.add("opt");
+    }
+
+    // check underscores
+    if (userform.value.match(und)) {
+      undInput.classList.remove("opt");
+      undInput.classList.add("valid");
+    }
+
+    else {
+      undInput.classList.remove("valid");
+      undInput.classList.add("opt");
+    }
+};
+
+//password message stuff
+let passform = document.getElementById("password");
+let pNumInput = document.getElementById("passNum");
+let pLettInput = document.getElementById("passLett");
+let pSpecInput = document.getElementById("passSpec");
+let pLenInput = document.getElementById("passLen");
+
+//password message displays
+passform.addEventListener("focus", () => {
+    document.getElementById("explanation").style.display = "block";
+});
+
+//password message goes away
+passform.addEventListener("blur", () => {
+    document.getElementById("explanation").style.display = "none";
+});
+
+//password validation
+passform.onkeyup = function () {
+    var nums = /[0-9]/g;
+    var lett = /[a-zA-Z]/g;
+    var spec = /[!@#$%^&*]/g;
+
+    //check length
+    if (passform.value.length >= 8 && passform.value.length <= 32) {
+      pLenInput.classList.remove("invalid");
+      pLenInput.classList.add("valid");
+    }
+
+    else {
+      pLenInput.classList.remove("valid");
+      pLenInput.classList.add("invalid");
+    }
+
+    //check numbers
+    if (passform.value.match(nums)) {
+      pNumInput.classList.remove("invalid");
+      pNumInput.classList.add("valid");
+    }
+
+    else {
+      pNumInput.classList.remove("valid");
+      pNumInput.classList.add("invalid");
+    }
+
+    //check letters
+    if (passform.value.match(lett)) {
+      pLettInput.classList.remove("invalid");
+      pLettInput.classList.add("valid");
+    }
+
+    else {
+      pLettInput.classList.remove("valid");
+      pLettInput.classList.add("invalid");
+    }
+
+    //check special characters
+    if (passform.value.match(spec)) {
+      pSpecInput.classList.remove("invalid");
+      pSpecInput.classList.add("valid");
+    }
+
+    else {
+      pSpecInput.classList.remove("valid");
+      pSpecInput.classList.add("invalid");
+    }
+};
+
+//Actual Functions
+
 const urlBase = 'https://springucfpoosdap.com/LAMPAPI';
 const extension = 'php';
 
 let userId = 0;
 let firstName = "";
 let lastName = "";
+const ids = [];
 
-function doLogin()
-{
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	
-	let login = document.getElementById("loginName").value;
-	let password = document.getElementById("loginPassword").value;
-//	var hash = md5( password );
-	
-	document.getElementById("loginResult").innerHTML = "";
+function doLogin() {
+    userId = 0;
+    firstName = "";
+    lastName = "";
 
-	let tmp = {login:login,password:password};
-//	var tmp = {login:login,password:hash};
-	let jsonPayload = JSON.stringify( tmp );
-	
-	let url = urlBase + '/Login.' + extension;
+    let login = document.getElementById("loginName").value;
+    let password = document.getElementById("loginPassword").value;
 
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				let jsonObject = JSON.parse( xhr.responseText );
-				userId = jsonObject.id;
-		
-				if( userId < 1 )
-				{		
-					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-					return;
-				}
-		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
+    //var hash = md5(password);
+    if (!validLoginForm(login, password)) {
+        document.getElementById("result").style.display = "block";
+        document.getElementById("loginResult").innerHTML = "invalid username or password";
+        return;
+    }
+    document.getElementById("result").style.display = "none";
+    document.getElementById("loginResult").innerHTML = "";
+    let tmp = {
+        login: login,
+        password: password //hash
+    };
 
-				saveCookie();
-	
-				window.location.href = "color.html";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("loginResult").innerHTML = err.message;
-	}
+    let jsonPayload = JSON.stringify(tmp);
+
+    //Login.php API
+    let url = urlBase + '/Login.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                let jsonObject = JSON.parse(xhr.responseText);
+                userId = jsonObject.id;
+
+                if (userId < 1) {
+                    document.getElementById("result").style.display = "block";
+                    document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+                    return;
+                }
+                firstName = jsonObject.firstName;
+                lastName = jsonObject.lastName;
+
+                saveCookie();
+                window.location.href = "contacts.html";
+            }
+        };
+
+        xhr.send(jsonPayload);
+    } catch (err) {
+        document.getElementById("result").style.display = "block";
+        document.getElementById("loginResult").innerHTML = err.message;
+    }
+}
+
+function doSignup() {
+    firstName = document.getElementById("firstName").value;
+    lastName = document.getElementById("lastName").value;
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    if (!validSignUpForm(firstName, lastName, username, password)) {
+        document.getElementById("result").style.display = "block";
+        document.getElementById("signupResult").innerHTML = "Invalid Signup";
+        return;
+    }
+
+    //var hash = md5(password);
+    document.getElementById("result").style.display = "none";
+    document.getElementById("signupResult").innerHTML = "";
+
+    let tmp = {
+        firstName: firstName,
+        lastName: lastName,
+        login: username,
+        password: password //hash
+    };
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    //SignUp.php API
+    let url = urlBase + '/SignUp.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    try {
+        xhr.onreadystatechange = function () {
+
+            if (this.readyState != 4) {
+                return;
+            }
+
+            if (this.status == 409) {
+                document.getElementById("result").style.display = "block";
+                document.getElementById("signupResult").innerHTML = "User already exists";
+                return;
+            }
+
+            if (this.status == 200) {
+
+                let jsonObject = JSON.parse(xhr.responseText);
+                userId = jsonObject.id;
+                document.getElementById("result").style.display = "block";
+                document.getElementById("signupResult").innerHTML = "User added";
+                firstName = jsonObject.firstName;
+                lastName = jsonObject.lastName;
+                saveCookie();
+            }
+        };
+
+        xhr.send(jsonPayload);
+    } catch (err) {
+        document.getElementById("result").style.display = "block";
+        document.getElementById("signupResult").innerHTML = err.message;
+    }
+}
+
+function validLoginForm(logName, logPass) {
+
+    var logNameErr, logPassErr = true;
+
+    if (logName == "") {
+        console.log("USERNAME EMPTY");
+    }
+    else {
+        let regex = /(?=.*[a-zA-Z])[a-zA-Z0-9-_]{2,30}$/;
+
+        if (regex.test(logName) == false) {
+            console.log("USERNAME INVALID");
+        }
+
+        else {
+
+            console.log("USERNAME VALID");
+            logNameErr = false;
+        }
+    }
+
+    if (logPass == "") {
+        console.log("PASSWORD EMPTY");
+        logPassErr = true;
+    }
+    else {
+        let regex = /(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{8,32}/;
+
+        if (regex.test(logPass) == false) {
+            console.log("PASSWORD INVALID");
+        }
+
+        else {
+
+            console.log("PASSWORD VALID");
+            logPassErr = false;
+        }
+    }
+
+    if ((logNameErr || logPassErr) == true) {
+        return false;
+    }
+    return true;
 
 }
 
-function saveCookie()
-{
-	let minutes = 20;
-	let date = new Date();
-	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
-}
+function validSignUpForm(fName, lName, user, pass) {
 
-function readCookie()
-{
-	userId = -1;
-	let data = document.cookie;
-	let splits = data.split(",");
-	for(var i = 0; i < splits.length; i++) 
-	{
-		let thisOne = splits[i].trim();
-		let tokens = thisOne.split("=");
-		if( tokens[0] == "firstName" )
-		{
-			firstName = tokens[1];
-		}
-		else if( tokens[0] == "lastName" )
-		{
-			lastName = tokens[1];
-		}
-		else if( tokens[0] == "userId" )
-		{
-			userId = parseInt( tokens[1].trim() );
-		}
-	}
-	
-	if( userId < 0 )
-	{
-		window.location.href = "index.html";
-	}
-	else
-	{
-//		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
-	}
-}
+    var fNameErr, lNameErr, userErr, passErr = true;
 
-function doLogout()
-{
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
-}
+    if (fName == "") {
+        console.log("FIRST NAME EMPTY");
+    }
+    else {
+        console.log("FIRST NAME VALID");
+        fNameErr = false;
+    }
 
-function addColor()
-{
-	let newColor = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
+    if (lName == "") {
+        console.log("LAST NAME EMPTY");
+    }
+    else {
+        console.log("LAST NAME VALID");
+        lNameErr = false;
+    }
 
-	let tmp = {color:newColor,userId,userId};
-	let jsonPayload = JSON.stringify( tmp );
+    if (user == "") {
+        console.log("USERNAME EMPTY");
+    }
+    else {
+        let regex = /(?=.*[a-zA-Z])([a-zA-Z0-9-_]).{2,30}$/;
 
-	let url = urlBase + '/AddColor.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorAddResult").innerHTML = "Color has been added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
-	}
-	
-}
+        if (regex.test(user) == false) {
+            console.log("USERNAME INVALID");
+        }
 
-function searchColor()
-{
-	let srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
-	
-	let colorList = "";
+        else {
 
-	let tmp = {search:srch,userId:userId};
-	let jsonPayload = JSON.stringify( tmp );
+            console.log("USERNAME VALID");
+            userErr = false;
+        }
+    }
 
-	let url = urlBase + '/SearchColors.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
-				let jsonObject = JSON.parse( xhr.responseText );
-				
-				for( let i=0; i<jsonObject.results.length; i++ )
-				{
-					colorList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						colorList += "<br />\r\n";
-					}
-				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = colorList;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
-	}
-	
+    if (pass == "") {
+        console.log("PASSWORD EMPTY");
+    }
+    else {
+        let regex = /(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{8,32}/;
+
+        if (regex.test(pass) == false) {
+            console.log("PASSWORD INVALID");
+        }
+
+        else {
+
+            console.log("PASSWORD VALID");
+            passErr = false;
+        }
+    }
+
+    if ((fNameErr || lNameErr || userErr || passErr) == true) {
+        return false;
+
+    }
+
+    return true;
 }
