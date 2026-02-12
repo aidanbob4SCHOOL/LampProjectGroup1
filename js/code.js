@@ -1,3 +1,9 @@
+
+//temporary before landing page
+function goToLogin(){
+    window.location.href = "login.html";
+}
+
 //Login Page Function (Switch between Login and Signup)
 const tabs = document.querySelectorAll(".tab");
 const forms = document.querySelectorAll(".form");
@@ -30,10 +36,10 @@ togglePassword.addEventListener('click', function (e) {
     password.setAttribute('type', type);
 
     // Toggle the eye slash icon 
-    if (togglePassword.src.match("https://springucfpoosdap.com/images/hide_password.png")) {
-        togglePassword.src ="https://springucfpoosdap.com/images/show_password.png";
+    if (togglePassword.src.match("../images/hide_password.png")) {
+        togglePassword.src ="../images/show_password.png";
     } else {
-        togglePassword.src ="https://springucfpoosdap.com/images/hide_password.png";
+        togglePassword.src ="../images/hide_password.png";
     }
 }); 
 
