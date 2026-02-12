@@ -17,6 +17,26 @@ tabs.forEach(tab => {
     });
 });
 
+//show/hide password
+const togglePassword =
+              document.querySelector('#togglePassword');
+
+const password = document.querySelector('#password');
+
+togglePassword.addEventListener('click', function (e) {
+    // Toggle the type attribute 
+    const type = password.getAttribute(
+        'type') === 'password' ? 'text': 'password';
+    password.setAttribute('type', type);
+
+    // Toggle the eye slash icon 
+    if (togglePassword.src.match("https://springucfpoosdap.com/images/hide_password.png")) {
+        togglePassword.src ="https://springucfpoosdap.com/images/show_password.png";
+    } else {
+        togglePassword.src ="https://springucfpoosdap.com/images/hide_password.png";
+    }
+}); 
+
 //username message stuff
 let userform = document.getElementById("username");
 let lettInput = document.getElementById("userLett");
@@ -396,3 +416,4 @@ function validSignUpForm(fName, lName, user, pass) {
 
     return true;
 }
+
