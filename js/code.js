@@ -4,25 +4,6 @@ function goToLogin(){
     window.location.href = "login.html";
 }
 
-//Login Page Function (Switch between Login and Signup)
-const tabs = document.querySelectorAll(".tab");
-const forms = document.querySelectorAll(".form");
-
-tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-        const target = tab.dataset.target;
-
-        // Tabs
-        tabs.forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-
-        // Forms
-        forms.forEach(form => {
-            form.classList.toggle("active", form.id === target);
-        });
-    });
-});
-
 //show/hide password
 const togglePassword =
               document.querySelector('#togglePassword');
@@ -42,6 +23,27 @@ togglePassword.addEventListener('click', function (e) {
         togglePassword.src ="../images/hide_password.png";
     }
 }); 
+
+//Login Page Function (Switch between Login and Signup)
+const tabs = document.querySelectorAll(".tab");
+const forms = document.querySelectorAll(".form");
+
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        const target = tab.dataset.target;
+        togglePassword.src ="../images/hide_password.png";
+        password.setAttribute('type', 'password');
+
+        // Tabs
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        // Forms
+        forms.forEach(form => {
+            form.classList.toggle("active", form.id === target);
+        });
+    });
+});
 
 //username message stuff
 let userform = document.getElementById("username");
