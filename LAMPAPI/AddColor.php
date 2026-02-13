@@ -4,36 +4,25 @@
 	$color = $inData["color"];
 	$userId = $inData["userId"];
 
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
-	if ($conn->connect_error) 
+	$connection = createConnection();
+	if ($connection->connect_error)
 	{
-		returnWithError( $conn->connect_error );
+		returnWithError( $connection->connect_error );
 	} 
 	else
 	{
-		$stmt = $conn->prepare("INSERT into Colors (UserId,Name) VALUES(?,?)");
-		$stmt->bind_param("ss", $userId, $color);
-		$stmt->execute();
-		$stmt->close();
-		$conn->close();
+		$statement = $connection->prepare("INSERT into Colors (UserId,Name) VALUES(?,?)");
+		$statement->bind_param("ss", $userId, $color);
+		$statement->execute();
+		$statement->close();
+		$connection->close();
 		returnWithError("");
 	}
 
-	function getRequestInfo()
+	function returnWithError( $error )
 	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
-
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
-	
-	function returnWithError( $err )
-	{
-		$retValue = '{"error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
+		$returnValue = '{"error":"' . $error . '"}';
+		sendResultInfoAsJson( $returnValue );
 	}
 	
 ?>

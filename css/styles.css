@@ -1,140 +1,188 @@
-body 
-{
-    background-color: #707070;
+* {
+    box-sizing: border-box;
 }
 
-#title 
-{
-    font-size: 40px;
-    width: 100%;
-    margin: 2% 5%;
-    text-align: center;
-    font-family: 'Ubuntu', sans-serif;
-    color: #FFFFFF;
+body {
+    background: #f5eadc;
+    font-family: system-ui, sans-serif;
 }
 
-#loginDiv
-{
+/* Container */
+.auth-container {
+    width: 360px;
+    margin: 120px auto;
+    position: relative;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 73px;
+    position: absolute;
+    top: -35px;
+    left: 0px;
+}
+
+.tab {
+    z-index: 4;
+    padding: 12px 26px;
     font-size: 30px;
-    width: 70%;
-    margin-left: 15%;
-    padding: 25px;
-    background-color: #b2b2b2;
+    border: none;
+    border-radius: 16px 16px 0 0;
+    background: #cbbda9;
+    color: #444;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
 }
 
-#loggedInDiv
-{
+.tab:not(.active):hover {
+    transform: translateY(-6px);
+    opacity: 0.9;
+}
+
+
+/* Active tab */
+.tab.active {
+    z-index: 6;
     font-size: 30px;
-    width: 70%;
-    margin-left: 15%;
-    padding: 25px;
-    background-color: #b2b2b2;
+    background: white;
+    color: black;
+    transform: translateY(2px);
 }
 
-#accessUIDiv
-{
-    font-size: 30px;
-    width: 70%;
-    margin-left: 15%;
-    padding: 25px;
-    background-color: #b2b2b2;
+/* Card */
+.card {
+    position: relative;
+    background: white;
+    border-radius: 22px;
+    padding: 28px 24px;
+    height: 320px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    overflow: hidden;
+    z-index: 5;
 }
 
-.buttons
-{
-    font-size: 30px;
-    border-radius: 25px;
-    width: 50%;
-    margin-left: 25%;
-    font-family: 'Ubuntu', sans-serif;
-}
-
-.buttons:hover{
-    background-color: #00d5124f;
-    color: #FFFFFF;
-    opacity: 50%;
-}
-
-#loginName
-{
-	font-size: 30px;
-}
-#loginPassword
-{
-	font-size: 30px;
-}
-#searchText
-{
-	font-size: 30px;
-}
-#colorText
-{
-	font-size: 30px;
-}
-
-input[type="text"],input[type="password"]{
-    border-radius: 25px;
-    text-align: center;
-    width: 80%;
-    margin-left: 10%;
-    margin-bottom: 2%;
-    font-family: 'Ubuntu', sans-serif;
-}
-
-#inner-title{
-    display: inline-block;
-    font-size: 0.8em;
-    width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    margin-bottom: 2%;
-    font-family: 'Ubuntu', sans-serif;
-    color: #95060a;
-}
-
-#loginResult{
-    display: inline-block;
-    font-size: 0.8em;
-    width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    margin-bottom: 2%;
-    font-family: 'Ubuntu', sans-serif;
-    color: #95060a;
-}
-
-#userName{
-    display: inline-block;
-    width: 80%;
-    margin-left: 10%;
-    text-align: center;
-}
-
-#logoutButton{
-    width: 20%;
-    margin-left: 40%;
-}
-
-select{
-    width: 30%;
-    margin-left: 35%;
-    margin-top: 2%;
-    font-size: 0.75em;
-    font-family: 'Ubuntu', sans-serif;
-}
-
-#colorSearchResult{
+.result {
+    position: relative;
+    top: 15px;
+    background: white;
+    border-radius: 22px;
+    padding: 28px 24px;
+    height: 80px;
     display: none;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    overflow: hidden;
+    z-index: 6;
 }
 
-#colorAddResult{
-    display: inline-block;
-    font-size: 0.8em;
-    width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    margin-top: 2%;
-    margin-bottom: 1%;
-    font-family: 'Ubuntu', sans-serif;
-    color: #95060a;
+.explanationUser {
+    position: relative;
+    top: 15px;
+    background: white;
+    display: none;
+    border-radius: 22px;
+    padding: 28px 24px;
+    height: 300px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    overflow: hidden;
+    z-index: 7;
+}
+.explanation {
+    position: relative;
+    top: 15px;
+    background: white;
+    display: none;
+    border-radius: 22px;
+    padding: 28px 24px;
+    height: 300px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    overflow: hidden;
+    z-index: 7;
+}
+
+
+.valid {
+    color: #009345;
+}
+
+.valid:before {
+    position: relative;
+    left: -10px;
+    content: "✔";
+}
+
+/* Add a red text color and a sad face when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -10px;
+    content: "✗";
+}
+
+/* for the optional number, hyphen, and underscore in username signup field */
+.opt {
+    color: #6E6050;
+}
+
+.opt:before {
+    position: relative;
+    left: -10px;
+    content: "-";
+}
+
+/* Forms */
+.form {
+    position: absolute;
+    inset: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+    z-index: 0;
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+}
+
+/* Active form */
+.form.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    z-index: 1;
+}
+
+/* Inputs */
+input {
+    padding: 12px 16px;
+    border-radius: 22px;
+    border: none;
+    background: #eee;
+    font-size: 14px;
+}
+
+input:invalid {
+    border: 2px solid red;
+}
+
+input:valid {
+    border: 2px solid #009345;
+}
+
+/* Buttons */
+button {
+    padding: 12px;
+    border-radius: 22px;
+    border: none;
+    background: #AB947A;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }
