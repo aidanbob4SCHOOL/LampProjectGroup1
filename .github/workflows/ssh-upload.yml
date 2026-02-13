@@ -16,21 +16,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up SSH key
+        env:
+          DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
           # create .ssh directory, ignoring errors if it exists
           mkdir -p ~/.ssh
 
           # create the id_rsa file in that directory, placing the private key secret in that file
-          echo "${{ secrets.DEPLOY_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "$DEPLOY_PRIVATE_KEY" > ~/.ssh/id_rsa
 
           # change permissions for that file such that only the action runner can read/write, with no permissions for anyone else
           chmod 600 ~/.ssh/id_rsa
           
           # get the public key of the server and add it to known hosts (prevents confirmation prompt when uploading via ssh)
-          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
-        env:
-          DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
 
       - name: Sync files to remote server
         env:
@@ -38,10 +38,6 @@ jobs:
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_PATH: /var/www/html
         run: |
-          # connect via ssh to the server using the defined remote user account
-          # use the strict host key checking flag to abort if the host's public key is not in the known hosts instead of prompting to add a new known host
-          ssh -o StrictHostKeyChecking=yes "${REMOTE_USER}@${REMOTE_HOST}"
-          
           # rsync is a file copying command that skips identical files, unlike scp. it also only transfers over the changes in the files.
           # flags used: -a = keep metadata, -v = verbose (show logs), -z = compress data transfer
           #             --delete = remove files from the server if they are deleted from the repo
