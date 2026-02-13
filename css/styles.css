@@ -1,10 +1,49 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
     background: #f5eadc;
     font-family: system-ui, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background: #9d8a6f;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    width: 112px;
+}
+
+.navbar h1 {
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 /* Container */
@@ -185,4 +224,17 @@ button {
     color: white;
     font-weight: bold;
     cursor: pointer;
+}
+
+/* Footer */
+.footer {
+    background: #27221C;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 15px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
