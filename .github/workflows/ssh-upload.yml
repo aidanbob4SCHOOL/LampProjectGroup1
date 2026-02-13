@@ -41,9 +41,5 @@ jobs:
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_PATH: /var/www/html
         run: |
-          # rsync is a file copying command that skips identical files, unlike scp. it also only transfers over the changes in the files.
-          # flags used: -a = keep metadata, -v = verbose (show logs), -z = compress data transfer
-          #             --delete = remove files from the server if they are deleted from the repo
-          #             --exclude = ignore .git directory
-          # copies over all files in the root directory of the repo to /var/www/html/ using the designated user
-          rsync -avz --delete --exclude='.git' ./ "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}/"
+          rm -rf .git
+          scp -rp . "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}"
