@@ -215,6 +215,24 @@ input:valid {
     border: 2px solid #009345;
 }
 
+/* show/hide password */
+.toggle {
+    margin-top: -28px;
+    position: relative;
+    top: -15px;
+    left: 280px;
+    display: inline; 
+    margin-left: -1.5%; 
+    vertical-align: middle;
+    z-index: 7;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.toggle:hover {
+    opacity: 1;
+}
+
 /* Buttons */
 button {
     padding: 12px;

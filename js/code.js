@@ -5,9 +5,7 @@ function goToLogin(){
 }
 
 //show/hide password
-const togglePassword =
-              document.querySelector('#togglePassword');
-
+const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
 
 togglePassword.addEventListener('click', function (e) {
@@ -24,6 +22,23 @@ togglePassword.addEventListener('click', function (e) {
     }
 }); 
 
+const togglePasswordLogin = document.querySelector('#togglePasswordLogin');
+const loginPassword = document.querySelector('#loginPassword');
+
+togglePasswordLogin.addEventListener('click', function (e) {
+    // Toggle the type attribute 
+    const type = loginPassword.getAttribute(
+        'type') === 'password' ? 'text' : 'password';
+    loginPassword.setAttribute('type', type);
+
+    // Toggle the eye slash icon 
+    if (togglePasswordLogin.src.match("../images/hide_password.png")) {
+        togglePasswordLogin.src ="../images/show_password.png";
+    } else {
+        togglePasswordLogin.src ="../images/hide_password.png";
+    }
+}); 
+
 //Login Page Function (Switch between Login and Signup)
 const tabs = document.querySelectorAll(".tab");
 const forms = document.querySelectorAll(".form");
@@ -33,10 +48,16 @@ tabs.forEach(tab => {
         const target = tab.dataset.target;
         togglePassword.src ="../images/hide_password.png";
         password.setAttribute('type', 'password');
+        togglePasswordLogin.src ="../images/hide_password.png";
+        password.setAttribute('type', 'password');
 
         // Tabs
         tabs.forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
+
+        document.getElementById("result").style.display = "none";
+        document.getElementById("signupResult").innerHTML = "";
+        document.getElementById("loginResult").innerHTML = "";
 
         // Forms
         forms.forEach(form => {
@@ -253,6 +274,7 @@ function doLogin() {
     }
     document.getElementById("result").style.display = "none";
     document.getElementById("loginResult").innerHTML = "";
+    document.getElementById("signupResult").innerHTML = "";
     let tmp = {
         login: login,
         password: password //hash
@@ -317,6 +339,7 @@ function doSignup() {
     //var hash = md5(password);
     document.getElementById("result").style.display = "none";
     document.getElementById("signupResult").innerHTML = "";
+    document.getElementById("loginResult").innerHTML = "";
 
     let tmp = {
         firstName: firstName,
