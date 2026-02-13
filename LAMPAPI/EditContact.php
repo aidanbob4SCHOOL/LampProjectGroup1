@@ -1,5 +1,3 @@
-// edit contacts
-
 <?php
     $inData = getRequestInfo();
 
