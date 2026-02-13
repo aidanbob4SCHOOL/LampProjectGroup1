@@ -24,7 +24,10 @@ jobs:
           mkdir -p ~/.ssh
 
           # create the id_rsa file in that directory, placing the private key secret in that file
-          echo "$DEPLOY_PRIVATE_KEY" > ~/.ssh/id_rsa
+          printf "%s" "$DEPLOY_PRIVATE_KEY" > ~/.ssh/id_rsa
+
+          # append extra newline just in case
+          echo "" >> ~/.ssh/id_rsa
 
           # change permissions for that file such that only the action runner can read/write, with no permissions for anyone else
           chmod 600 ~/.ssh/id_rsa
