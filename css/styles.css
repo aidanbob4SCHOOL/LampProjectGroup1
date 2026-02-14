@@ -11,7 +11,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background: #9d8a6f;
+    background: #6E6050;
     padding: 20px 40px;
     display: flex;
     justify-content: space-between;
@@ -249,7 +249,7 @@ button {
     background: #27221C;
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 32px 20px;
     font-size: 15px;
     position: fixed;
     bottom: 0;
