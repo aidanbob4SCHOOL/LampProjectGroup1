@@ -55,9 +55,7 @@ tabs.forEach(tab => {
         tabs.forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
 
-        document.getElementById("result").style.display = "none";
-        document.getElementById("signupResult").innerHTML = "";
-        document.getElementById("loginResult").innerHTML = "";
+        clearError();
 
         // Forms
         forms.forEach(form => {
@@ -268,13 +266,12 @@ function doLogin() {
 
     //var hash = md5(password);
     if (!validLoginForm(login, password)) {
-        document.getElementById("result").style.display = "block";
-        document.getElementById("loginResult").innerHTML = "invalid username or password";
+        popError("invalid username or password");
         return;
     }
-    document.getElementById("result").style.display = "none";
-    document.getElementById("loginResult").innerHTML = "";
-    document.getElementById("signupResult").innerHTML = "";
+
+    clearError();
+
     let tmp = {
         login: login,
         password: password //hash
@@ -300,8 +297,7 @@ function doLogin() {
                 console.log(userId);
 
                 if (userId < 1) {
-                    document.getElementById("result").style.display = "block";
-                    document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+                    popError("User/Password combination incorrect");
                     console.log("userID invalid: Invalid login?" );
                     return;
                 }
@@ -317,8 +313,7 @@ function doLogin() {
         xhr.send(jsonPayload);
         console.log("Payload Sent!");
     } catch (err) {
-        document.getElementById("result").style.display = "block";
-        document.getElementById("loginResult").innerHTML = err.message;
+        popError(err.message);
         console.log("Something went wrong with JSON: " + err.message);
     }
 }
@@ -331,15 +326,12 @@ function doSignup() {
     let password = document.getElementById("password").value;
 
     if (!validSignUpForm(firstName, lastName, username, password)) {
-        document.getElementById("result").style.display = "block";
-        document.getElementById("signupResult").innerHTML = "Invalid Signup";
+        popError("Invalid Signup");
         return;
     }
 
     //var hash = md5(password);
-    document.getElementById("result").style.display = "none";
-    document.getElementById("signupResult").innerHTML = "";
-    document.getElementById("loginResult").innerHTML = "";
+    clearError();
 
     let tmp = {
         firstName: firstName,
@@ -365,8 +357,7 @@ function doSignup() {
             }
 
             if (this.status == 409) {
-                document.getElementById("result").style.display = "block";
-                document.getElementById("signupResult").innerHTML = "User already exists";
+                popError("User already exists");
                 return;
             }
 
@@ -374,8 +365,7 @@ function doSignup() {
 
                 let jsonObject = JSON.parse(xhr.responseText);
                 userId = jsonObject.id;
-                document.getElementById("result").style.display = "block";
-                document.getElementById("signupResult").innerHTML = "User added";
+                popError("User added");
                 firstName = jsonObject.firstName;
                 lastName = jsonObject.lastName;
                 saveCookie();
@@ -384,8 +374,7 @@ function doSignup() {
 
         xhr.send(jsonPayload);
     } catch (err) {
-        document.getElementById("result").style.display = "block";
-        document.getElementById("signupResult").innerHTML = err.message;
+        popError(err.message);
     }
 }
 
@@ -497,3 +486,13 @@ function validSignUpForm(fName, lName, user, pass) {
     return true;
 }
 
+function popError(message){
+    document.getElementById("result").style.display = "block";
+    if(message == "") message = "Unknown Error thrown";
+    document.getElementById("resultInfo").innerHTML = message;
+}
+
+function clearError(){
+    document.getElementById("result").style.display = "none";
+    document.getElementById("resultInfo").innerHTML = "";
+}
