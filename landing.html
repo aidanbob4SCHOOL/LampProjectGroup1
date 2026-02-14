@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CoffeeChat - Home</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --coffee-dark: #2b241c;
+            --coffee-brown: #7b6a57;
+            --latte: #b8aa98;
+            --cream: #d8cbbd;
+            --accent-green: #2f8f62;
+        }
+
+        body {
+            background: var(--cream);
+            color: var(--coffee-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .landing-main {
+            flex: 1 1 auto;
+            background: var(--coffee-brown);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4rem 8%;
+            gap: 3rem;
+            flex-wrap: wrap;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .hero-text {
+            max-width: 520px;
+        }
+
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--coffee-dark);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #4a4036;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 1.6rem;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            width: 320px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-top: 6px solid var(--accent-green);
+        }
+
+        .hero-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-preview {
+            background: var(--latte);
+            border-radius: 14px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            color: #2b241c;
+            font-size: 0.95rem;
+        }
+
+        .features {
+            background: var(--coffee-brown);
+            color: white;
+            padding: 4rem 8%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            font-family: "Poppins", sans-serif;
+            align-content: center;
+            min-height: 0;
+            flex: 1;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2rem;
+            border-radius: 20px;
+            transform: translateY(-40px);
+        }
+
+        .feature h4 {
+            margin-bottom: 0.8rem;
+            color: var(--cream);
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-left">
+        <img src="images/coffeelogo.png" class="logo" alt="CoffeeChat Logo" />
+        <h1>CoffeeChat</h1>
+    </div>
+
+    <nav class="nav-links">
+        <a href="landing.html">Home</a>
+        <a href="contacts.html">Contacts</a>
+        <a href="#">About Us</a>
+        <a href="login.html">Login</a>
+    </nav>
+</header>
+
+<main class="landing-main">
+    <section class="hero">
+        <div class="hero-text">
+            <h2>Welcome!</h2>
+            <p>
+                Some description about our app. Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad
+                minim veniam, quis nostrud exercitation ullamco laboris nisi
+                ut aliquip ex ea commodo consequat.
+            </p>
+            <div class="btn-group">
+                <a href="login.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <h3>Recent Contacts</h3>
+            <div class="contact-preview">First Last</div>
+            <div class="contact-preview">First Last</div>
+            <div class="contact-preview">First Last</div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <h4>Create</h4>
+            <p>
+                Add new coffee chat contacts with notes, company info, and
+                meeting dates.
+            </p>
+        </div>
+        <div class="feature">
+            <h4>Update</h4>
+            <p>Edit details after follow‑ups or new conversations.</p>
+        </div>
+        <div class="feature">
+            <h4>Organize</h4>
+            <p>
+                Search and filter contacts to quickly find the right person.
+            </p>
+        </div>
+        <div class="feature">
+            <h4>Delete</h4>
+            <p>Keep your list clean by removing outdated connections.</p>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">2026 CoffeeChat - Built for lasting connections</footer>
+</body>
+</html>
