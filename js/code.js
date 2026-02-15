@@ -49,7 +49,7 @@ tabs.forEach(tab => {
         togglePassword.src ="../images/hide_password.png";
         password.setAttribute('type', 'password');
         togglePasswordLogin.src ="../images/hide_password.png";
-        password.setAttribute('type', 'password');
+        loginpassword.setAttribute('type', 'password');
 
         // Tabs
         tabs.forEach(t => t.classList.remove("active"));
@@ -404,7 +404,7 @@ function validLoginForm(logName, logPass) {
         logPassErr = true;
     }
     else {
-        let regex = /(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{8,32}/;
+        let regex = /(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{1,32}/;
 
         if (regex.test(logPass) == false) {
             console.log("PASSWORD INVALID");
@@ -495,4 +495,5 @@ function popError(message){
 function clearError(){
     document.getElementById("result").style.display = "none";
     document.getElementById("resultInfo").innerHTML = "";
+
 }
