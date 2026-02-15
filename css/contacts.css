@@ -91,6 +91,17 @@ body {
     cursor: pointer;
 }
 
+.search {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 25px;
+    background: #4caf82;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 /* Grid For Contacts Tabs */
 .card-grid {
     display: grid;
