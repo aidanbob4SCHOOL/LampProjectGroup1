@@ -49,7 +49,7 @@ tabs.forEach(tab => {
         togglePassword.src ="../images/hide_password.png";
         password.setAttribute('type', 'password');
         togglePasswordLogin.src ="../images/hide_password.png";
-        loginpassword.setAttribute('type', 'password');
+        loginPassword.setAttribute('type', 'password');
 
         // Tabs
         tabs.forEach(t => t.classList.remove("active"));
@@ -497,3 +497,4 @@ function clearError(){
     document.getElementById("resultInfo").innerHTML = "";
 
 }
+
