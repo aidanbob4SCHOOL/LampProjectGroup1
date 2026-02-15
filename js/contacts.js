@@ -1,5 +1,5 @@
 let userId = -1;
-const urlBase = "http://localhost:8000/LAMPAPI"
+const urlBase = "https://springucfpoosdap.com/LAMPAPI"
 
 function readCookie() {
     let data = document.cookie;
