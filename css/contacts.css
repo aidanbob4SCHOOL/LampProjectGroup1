@@ -5,13 +5,13 @@
 }
 
 body {
-    background: #f5eadc;
+    background: #d8cbbd;
     font-family: system-ui, sans-serif;
 }
 
 /* Navbar */
 .navbar {
-    background: #9d8a6f;
+    background: #6E6050;
     padding: 20px 40px;
     display: flex;
     justify-content: space-between;
