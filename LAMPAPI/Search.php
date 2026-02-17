@@ -45,7 +45,7 @@
     
     function returnWithError( $err )
     {
-        $retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}'; // Build an error JSON payload (fields present for client compatibility).
+        $retValue = '{"results":[],"error":"' . $err . '"}'; // Build an error JSON payload (fields present for client compatibility).
         sendResultInfoAsJson( $retValue ); // Send the JSON response.
     }
     

@@ -35,7 +35,6 @@
         returnWithError("Login contains invalid characters (only letters, numbers, hyphens, and underscores are allowed).");
     }
 
-    // Placeholder until we decide on the actual password requirements
     if (strlen($password) < 8) {
         returnWithError("Password must be at least 8 characters.");
     }
@@ -48,6 +47,15 @@
     if ($connection->connect_error) {
         returnWithError($connection->connect_error);
     } else {
+        $checkExists = $connection->prepare("SELECT * FROM Users WHERE login = ?");
+        $checkExists->bind_param("s", $login);
+        if ($checkExists->execute()) {
+            $checkExists->store_result();
+        }
+        if ($checkExists->num_rows > 0) {
+            returnWithError("User account already exists.");
+        }
+
         //Insert the user with the hashed password
         $statement = $connection->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
         $statement->bind_param("ssss", $firstName, $lastName, $login, $hashedPassword);

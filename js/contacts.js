@@ -1,6 +1,5 @@
 let userId = -1;
 const urlBase = "https://springucfpoosdap.com/LAMPAPI"
-let action = "add";
 
 function readCookie() {
     let data = document.cookie;
@@ -248,7 +247,7 @@ function listenPopup() {
     const popupContent = document.getElementById("popup-content");
     const addContactButton = document.getElementsByClassName("add-btn")[0]
 
-    addContactButton.onclick = function() {
+    addContactButton.addEventListener('click', () => {
         popupContent.innerHTML = `
             <span id="close">&times;</span>
             <div class="card-top"></div>
@@ -263,8 +262,17 @@ function listenPopup() {
             </form>
         `
         popup.style.display = "block";
-        action = "add";
-    }
+
+        const closeButton = document.getElementById("close");
+        closeButton.addEventListener('click', () => {
+            popup.style.display = "none";
+        });
+
+        const submitButton = document.getElementById("contactFormSubmitButton")
+        submitButton.addEventListener('click', () => {
+            addContact();
+        })
+    });
 
     const closeButton = document.getElementById("close");
     closeButton.addEventListener('click', () => {
@@ -318,7 +326,6 @@ function listenPopup() {
         document.getElementById("id").value = contact.id;
 
         popup.style.display = "block";
-        action = "edit";
 
         const submitButton = document.getElementById("contactFormSubmitButton")
         submitButton.addEventListener('click', () => {
@@ -372,17 +379,12 @@ function listenPopup() {
         document.getElementById("id").value = contact.id;
 
         popup.style.display = "block";
-        action = "delete";
 
         const submitButton = document.getElementById("contactFormSubmitButton")
         submitButton.addEventListener('click', () => {
             deleteContact();
         })
     })
-
-    closeButton.addEventListener('click', () => {
-        popup.style.display = "none";
-    });
 
     window.onclick = function(event) {
         if (event.target === popup) {
@@ -391,6 +393,14 @@ function listenPopup() {
     }
 }
 
+function listenLogout() {
+    const logoutLink = document.getElementById("logout");
+    logoutLink.addEventListener('click', () => {
+        document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    })
+}
+
 searchContacts("");
 listenSearch();
 listenPopup();
+listenLogout();
