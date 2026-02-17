@@ -209,7 +209,7 @@ body {
     border-radius: 20px;
 }
 
-.close {
+#close {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -217,8 +217,8 @@ body {
     padding-right: 2%;
 }
 
-.close:hover,
-.close:focus {
+#close:hover,
+#close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;

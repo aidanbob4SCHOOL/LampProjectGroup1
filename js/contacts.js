@@ -1,5 +1,6 @@
 let userId = -1;
 const urlBase = "https://springucfpoosdap.com/LAMPAPI"
+let action = "add";
 
 function readCookie() {
     let data = document.cookie;
@@ -208,15 +209,48 @@ function editContact() {
     }
 }
 
+function deleteContact() {
+    const id = document.getElementById("id").value;
+
+    const tmp = {
+        contactId: id,
+        userId: userId
+    };
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/DeleteContact.php';
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.error !== "") {
+                    console.error(response.error)
+                }
+                document.getElementById("popup").style.display = "none";
+                searchContacts("");
+            }
+        };
+
+        xhr.send(jsonPayload);
+    } catch (err) {
+        popError(err.message);
+        console.log("Something went wrong with JSON: " + err.message);
+    }
+}
+
 function listenPopup() {
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popup-content");
     const addContactButton = document.getElementsByClassName("add-btn")[0]
-    const closeButton = document.getElementsByClassName("close")[0];
 
     addContactButton.onclick = function() {
         popupContent.innerHTML = `
-            <span class="close">&times;</span>
+            <span id="close">&times;</span>
             <div class="card-top"></div>
             <h3 class="card-body">Add Contact</h3>
             <form id="contactForm" class="card-body">
@@ -230,15 +264,19 @@ function listenPopup() {
         `
         popup.style.display = "block";
         action = "add";
-
     }
+
+    const closeButton = document.getElementById("close");
+    closeButton.addEventListener('click', () => {
+        popup.style.display = "none";
+    });
 
     const cardGrid = document.getElementById("contactList");
     cardGrid.addEventListener('click', (event) => {
-        const button = event.target.closest('.edit-btn');
-        if (!button) return;
+        const editButton = event.target.closest('.edit-btn');
+        if (!editButton) return;
 
-        const card = button.closest('.contact-card');
+        const card = editButton.closest('.contact-card');
         if (!card) return;
 
         const contact = {
@@ -253,7 +291,7 @@ function listenPopup() {
         const popup = document.getElementById("popup");
 
         popupContent.innerHTML = `
-            <span class="close">&times;</span>
+            <span id="close">&times;</span>
             <div class="card-top"></div>
             <h3 class="card-body">Edit Contact</h3>
             <form id="contactForm" class="card-body">
@@ -266,6 +304,12 @@ function listenPopup() {
                 <input type="button" value="Save" id="contactFormSubmitButton" class="contactFormInput">
             </form>
         `
+
+        const closeButton = document.getElementById("close");
+        closeButton.addEventListener('click', () => {
+            popup.style.display = "none";
+        });
+
         document.getElementById("firstName").value = contact.firstName;
         document.getElementById("lastName").value = contact.lastName;
         document.getElementById("email").value = contact.email;
@@ -282,6 +326,60 @@ function listenPopup() {
         })
     })
 
+    cardGrid.addEventListener('click', (event) => {
+        const deleteButton = event.target.closest('.delete-btn');
+        if (!deleteButton) return;
+
+        const card = deleteButton.closest('.contact-card');
+        if (!card) return;
+
+        const contact = {
+            firstName: card.dataset.first,
+            lastName: card.dataset.last !== "(None)" ? card.dataset.last : "",
+            phone: card.dataset.phone !== "(None)" ? card.dataset.phone : "",
+            email: card.dataset.email !== "(None)" ? card.dataset.email : "",
+            notes: card.dataset.notes !== "(None)" ? card.dataset.notes : "",
+            id: card.dataset.id
+        };
+        const popupContent = document.getElementById("popup-content");
+        const popup = document.getElementById("popup");
+
+        popupContent.innerHTML = `
+            <span id="close">&times;</span>
+            <div class="card-top"></div>
+            <h3 class="card-body">Delete Contact</h3>
+            <form id="contactForm" class="card-body">
+                <input type="text" id="firstName" placeholder="First Name" class="contactFormInput" disabled="disabled"><br>
+                <input type="text" id="lastName" placeholder="Last Name" class="contactFormInput" disabled="disabled"><br>
+                <input type="text" id="phone" placeholder="Phone Number" class="contactFormInput" disabled="disabled"><br>
+                <input type="text" id="email" placeholder="Email" class="contactFormInput" disabled="disabled"><br>
+                <textarea id="notes" placeholder="Notes" class="contactFormInput" disabled="disabled"></textarea><br>
+                <input type="hidden" id="id">
+                <input type="button" value="Delete" id="contactFormSubmitButton" class="contactFormInput invalid">
+            </form>
+        `
+
+        const closeButton = document.getElementById("close");
+        closeButton.addEventListener('click', () => {
+            popup.style.display = "none";
+        });
+
+        document.getElementById("firstName").value = contact.firstName;
+        document.getElementById("lastName").value = contact.lastName;
+        document.getElementById("email").value = contact.email;
+        document.getElementById("phone").value = contact.phone;
+        document.getElementById("notes").value = contact.notes;
+        document.getElementById("id").value = contact.id;
+
+        popup.style.display = "block";
+        action = "delete";
+
+        const submitButton = document.getElementById("contactFormSubmitButton")
+        submitButton.addEventListener('click', () => {
+            deleteContact();
+        })
+    })
+
     closeButton.addEventListener('click', () => {
         popup.style.display = "none";
     });
@@ -289,18 +387,6 @@ function listenPopup() {
     window.onclick = function(event) {
         if (event.target === popup) {
             popup.style.display = "none";
-        }
-    }
-
-    const formSubmitButton = document.getElementById("contactFormSubmitButton");
-    formSubmitButton.onclick = function() {
-        switch (action) {
-            case "add":
-                addContact();
-                break;
-            case "edit":
-                editContact();
-                break;
         }
     }
 }
