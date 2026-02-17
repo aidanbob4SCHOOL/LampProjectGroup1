@@ -7,10 +7,11 @@
     $last = $inData["lastName"];
     $number = $inData["phoneNumber"];
     $email = $inData["email"];
+    $note = $inData["notes"];
     $userId = $inData["userId"];
 
-    if (strlen($first) == 0 && strlen($last) == 0 && strlen($number) == 0 && strlen($email) == 0) {
-        returnWithError("At least one field is required");
+    if (strlen($first) == 0) {
+        returnWithError("First name is required");
     }
 
     $connection = createConnection();
@@ -25,12 +26,12 @@
         $verifyUserExists->execute();
         $verifyUserExists->store_result();
         if ($verifyUserExists->num_rows < 1) {
-            returnWithError( "Attempting to add contact for user that does not exist." );
+            returnWithError( "You are attempting to add a contact for a user that does not exist." );
         }
         $verifyUserExists->close();
 
-        $statement = $connection->prepare("INSERT into Contacts (FirstName, LastName, Phone, Email, UserID) VALUES(?, ?, ?, ?, ?)");
-        $statement->bind_param("sssss", $first, $last, $number, $email, $userId);
+        $statement = $connection->prepare("INSERT into Contacts (FirstName, LastName, Phone, Email, Notes, UserID) VALUES(?, ?, ?, ?, ?, ?)");
+        $statement->bind_param("ssssss", $first, $last, $number, $email, $note, $userId);
         $statement->execute();
         $statement->close();
         $connection->close();

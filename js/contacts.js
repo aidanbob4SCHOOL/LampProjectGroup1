@@ -5,7 +5,7 @@ function readCookie() {
     let data = document.cookie;
     let splits = data.split(",");
 
-    for (var i = 0; i < splits.length; i++) {
+    for (let i = 0; i < splits.length; i++) {
 
         let thisOne = splits[i].trim();
         let tokens = thisOne.split("=");
@@ -24,7 +24,7 @@ function readCookie() {
     }
 
     if (userId < 0) {
-        window.location.href = "index.html";
+        window.location.href = "login.html";
     }
 }
 
@@ -52,21 +52,27 @@ function searchContacts(searchQuery) {
             if (this.readyState === 4 && this.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 for (let contact of response.results) {
+                    if (contact.lastName === "") {
+                        contact.lastName = "";
+                    }
                     if (contact.phone === "") {
                         contact.phone = "(None)"
                     }
                     if (contact.email === "") {
                         contact.email = "(None)"
                     }
+                    if (contact.notes === "") {
+                        contact.notes = "";
+                    }
                     contactList.innerHTML += `
-                        <div class="contact-card">
+                        <div class="contact-card" data-first="${contact.firstName}" data-last="${contact.lastName}" data-email="${contact.email}" data-phone="${contact.phone}" data-notes="${contact.notes}" data-id="${contact.id}">
                         <div class="card-top"></div>
                         <div class="card-body">
                           <h3>${contact.firstName} ${contact.lastName}</h3>
                           <p class="contact-info">${contact.email} / ${contact.phone}</p>
-                          <p class="note">${contact.notes}</p>
+                          <p class="notes">${contact.notes}</p>
                           <div class="card-actions">
-                            <button class="edit-btn">Edit</button>
+                            <button class="edit-btn"">Edit</button>
                             <button class="delete-btn">Delete</button>
                           </div>
                         </div>
@@ -105,5 +111,200 @@ function listenSearch() {
     })
 }
 
+function addContact() {
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const notes = document.getElementById("notes").value;
+
+    const tmp = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNumber: phone,
+        notes: notes,
+        userId: userId
+    };
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/AddContact.php';
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.error !== "") {
+                    console.error(response.error)
+                }
+                document.getElementById("popup").style.display = "none";
+                firstName.value = "";
+                lastName.value = "";
+                email.value = "";
+                phone.value = "";
+                notes.value = "";
+                searchContacts("");
+            }
+        };
+
+        xhr.send(jsonPayload);
+    } catch (err) {
+        popError(err.message);
+        console.log("Something went wrong with JSON: " + err.message);
+    }
+}
+
+function editContact() {
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const notes = document.getElementById("notes").value;
+    const id = document.getElementById("id").value;
+
+    const tmp = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        notes: notes,
+        contactId: id,
+        userId: userId
+    };
+
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/EditContact.php';
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.error !== "") {
+                    console.error(response.error)
+                }
+                document.getElementById("popup").style.display = "none";
+                id.value = "";
+                firstName.value = "";
+                lastName.value = "";
+                email.value = "";
+                phone.value = "";
+                notes.value = "";
+                searchContacts("");
+            }
+        };
+
+        xhr.send(jsonPayload);
+    } catch (err) {
+        popError(err.message);
+        console.log("Something went wrong with JSON: " + err.message);
+    }
+}
+
+function listenPopup() {
+    const popup = document.getElementById("popup");
+    const popupContent = document.getElementById("popup-content");
+    const addContactButton = document.getElementsByClassName("add-btn")[0]
+    const closeButton = document.getElementsByClassName("close")[0];
+
+    addContactButton.onclick = function() {
+        popupContent.innerHTML = `
+            <span class="close">&times;</span>
+            <div class="card-top"></div>
+            <h3 class="card-body">Add Contact</h3>
+            <form id="contactForm" class="card-body">
+                <input type="text" id="firstName" placeholder="First Name" class="contactFormInput" required="required"><br>
+                <input type="text" id="lastName" placeholder="Last Name" class="contactFormInput"><br>
+                <input type="text" id="phone" placeholder="Phone Number" class="contactFormInput"><br>
+                <input type="text" id="email" placeholder="Email" class="contactFormInput"><br>
+                <textarea id="notes" placeholder="Notes" class="contactFormInput"></textarea><br>
+                <input type="button" value="Add" id="contactFormSubmitButton" class="contactFormInput">
+            </form>
+        `
+        popup.style.display = "block";
+        action = "add";
+
+    }
+
+    const cardGrid = document.getElementById("contactList");
+    cardGrid.addEventListener('click', (event) => {
+        const button = event.target.closest('.edit-btn');
+        if (!button) return;
+
+        const card = button.closest('.contact-card');
+        if (!card) return;
+
+        const contact = {
+            firstName: card.dataset.first,
+            lastName: card.dataset.last !== "(None)" ? card.dataset.last : "",
+            phone: card.dataset.phone !== "(None)" ? card.dataset.phone : "",
+            email: card.dataset.email !== "(None)" ? card.dataset.email : "",
+            notes: card.dataset.notes !== "(None)" ? card.dataset.notes : "",
+            id: card.dataset.id
+        };
+        const popupContent = document.getElementById("popup-content");
+        const popup = document.getElementById("popup");
+
+        popupContent.innerHTML = `
+            <span class="close">&times;</span>
+            <div class="card-top"></div>
+            <h3 class="card-body">Edit Contact</h3>
+            <form id="contactForm" class="card-body">
+                <input type="text" id="firstName" placeholder="First Name" class="contactFormInput" required="required"><br>
+                <input type="text" id="lastName" placeholder="Last Name" class="contactFormInput"><br>
+                <input type="text" id="phone" placeholder="Phone Number" class="contactFormInput"><br>
+                <input type="text" id="email" placeholder="Email" class="contactFormInput"><br>
+                <textarea id="notes" placeholder="Notes" class="contactFormInput"></textarea><br>
+                <input type="hidden" id="id">
+                <input type="button" value="Save" id="contactFormSubmitButton" class="contactFormInput">
+            </form>
+        `
+        document.getElementById("firstName").value = contact.firstName;
+        document.getElementById("lastName").value = contact.lastName;
+        document.getElementById("email").value = contact.email;
+        document.getElementById("phone").value = contact.phone;
+        document.getElementById("notes").value = contact.notes;
+        document.getElementById("id").value = contact.id;
+
+        popup.style.display = "block";
+        action = "edit";
+
+        const submitButton = document.getElementById("contactFormSubmitButton")
+        submitButton.addEventListener('click', () => {
+            editContact();
+        })
+    })
+
+    closeButton.addEventListener('click', () => {
+        popup.style.display = "none";
+    });
+
+    window.onclick = function(event) {
+        if (event.target === popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    const formSubmitButton = document.getElementById("contactFormSubmitButton");
+    formSubmitButton.onclick = function() {
+        switch (action) {
+            case "add":
+                addContact();
+                break;
+            case "edit":
+                editContact();
+                break;
+        }
+    }
+}
+
 searchContacts("");
 listenSearch();
+listenPopup();

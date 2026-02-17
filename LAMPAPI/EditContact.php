@@ -1,4 +1,6 @@
 <?php
+    require_once("IO.php");
+
     $inData = getRequestInfo();
 
 	$userId = $inData["userId"]; # REFERS TO USER IN USER TABLE
@@ -8,19 +10,20 @@
 	$lastName = $inData["lastName"];
 	$email = $inData["email"];
 	$phone = $inData["phone"];
+    $notes = $inData["notes"];
 
 	// check for userID and contactID, if missing return with error
-	//if(empty($userId) || empty($contactID)) {
-	//	returnWithError("User ID and Contact ID are required.");
-	//}
+	if(empty($userId) || empty($contactID)) {
+		returnWithError("User ID and Contact ID are required.");
+	}
 
-	// ensure user must provide all fields to update contact
-	if(empty($firstName) || empty($lastName) || empty($email) || empty($phone)) {
-		returnWithError("All fields are required.");
+	// ensure user must provide all required fields to update contact
+	if(empty($firstName)) {
+		returnWithError("First name is required.");
 	}
 
 	// establish database connection
-    $conn = new mysqli("localhost", "apitest_user", "apitest_1234", "api_test_db");
+    $conn = createConnection();
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
@@ -28,8 +31,8 @@
 	else
 	{
 		// update contacts database, set new values where userId and contactId matches
-		$stmt = $conn->prepare("UPDATE Contacts SET firstName=?, lastName=?, email=?, phone=? WHERE UserId=? AND ID=?");
-		$stmt->bind_param("ssssii", $firstName, $lastName, $email, $phone, $userId, $contactID);
+		$stmt = $conn->prepare("UPDATE Contacts SET FirstName=?, LastName=?, Email=?, Phone=?, Notes=? WHERE UserId=? AND ID=?");
+		$stmt->bind_param("sssssii", $firstName, $lastName, $email, $phone, $notes, $userId, $contactID);
 
 
 		// if statement execution fails, return with error
@@ -52,17 +55,6 @@
 		$stmt->close();
 		$conn->close();
 		returnWithError("");
-	}
-
-    function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
-
-    function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
 	}
 	
 	function returnWithError( $err )

@@ -13,7 +13,7 @@
     } 
     else
     {
-        $stmt = $conn->prepare("select FirstName, LastName, Phone, Email, Notes from Contacts where (FirstName like ? or LastName like ? or Email like ? or Phone like ? or Notes like ?) and UserID=?"); // Prepare parameterized SQL to avoid injection.
+        $stmt = $conn->prepare("select ID, FirstName, LastName, Phone, Email, Notes from Contacts where (FirstName like ? or LastName like ? or Email like ? or Phone like ? or Notes like ?) and UserID=?"); // Prepare parameterized SQL to avoid injection.
         $searchParam = "%" . $inData["search"] . "%"; // Build search pattern with wildcards for LIKE.
         $stmt->bind_param("ssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $inData["userId"]); // Bind string parameters: search pattern and userId.
         $stmt->execute(); // Execute the prepared statement.
@@ -27,7 +27,7 @@
                 $searchResults .= ","; // Add comma between entries after the first.
             }
             $searchCount++; // Increment results counter.
-            $searchResults .= '{"firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","phone":"' . $row["Phone"] . '","email":"' . $row["Email"] . '","notes":"' . $row["Notes"] . '"}'; // Append the contact fields as a quoted JSON string.
+            $searchResults .= '{"id":"' . $row["ID"] . '","firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","phone":"' . $row["Phone"] . '","email":"' . $row["Email"] . '","notes":"' . $row["Notes"] . '"}'; // Append the contact fields as a quoted JSON string.
         }
         
         if( $searchCount == 0 )

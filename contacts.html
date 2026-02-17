@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>CoffeeChat - Contacts</title>
+  <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/contacts.css" />
 </head>
 
@@ -37,7 +38,39 @@
 
     <!-- Contact Grid -->
     <div class="card-grid" id="contactList"></div>
+
+    <!-- Sample Card:
+    <div class="contact-card">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <h3>${contact.firstName} ${contact.lastName}</h3>
+        <p class="contact-info">${contact.email} / ${contact.phone}</p>
+        <p class="notes">${contact.notes}</p>
+        <div class="card-actions">
+          <button class="edit-btn">Edit</button>
+          <button class="delete-btn">Delete</button>
+        </div>
+      </div>
+    </div> -->
+
   </main>
+
+  <!-- Popup -->
+  <div id="popup">
+    <div id="popup-content" class="contact-card">
+      <span class="close">&times;</span>
+      <div class="card-top"></div>
+      <h3 class="card-body">Add Contact</h3>
+      <form id="contactForm" class="card-body">
+        <input type="text" id="firstName" placeholder="First Name" class="contactFormInput" required="required"><br>
+        <input type="text" id="lastName" placeholder="Last Name" class="contactFormInput"><br>
+        <input type="text" id="phone" placeholder="Phone Number" class="contactFormInput"><br>
+        <input type="text" id="email" placeholder="Email" class="contactFormInput"><br>
+        <textarea id="notes" placeholder="Notes" class="contactFormInput"></textarea><br>
+        <input type="button" value="Add" id="contactFormSubmitButton" class="contactFormInput">
+      </form>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">2026 CoffeeChat - Built for lasting connections</footer>

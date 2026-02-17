@@ -1,4 +1,6 @@
 <?php
+    require_once("IO.php");
+
     $inData = getRequestInfo();
 
 	$userId = $inData["userId"];
@@ -11,7 +13,7 @@
 	//}
 
 	// establish database connection
-    $conn = new mysqli("localhost", "apitest_user", "apitest_1234", "api_test_db");
+    $conn = createConnection();
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
@@ -44,17 +46,6 @@
 		$stmt->close();
 		$conn->close();
 		returnWithError("");
-	}
-
-    function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
-
-    function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
 	}
 	
 	function returnWithError( $err )
