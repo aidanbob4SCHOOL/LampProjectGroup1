@@ -204,7 +204,7 @@ passform.onkeyup = function () {
 const urlBase = 'https://springucfpoosdap.com/LAMPAPI';
 const extension = 'php';
 
-let userId = 0;
+let userId = "";
 let firstName = "";
 let lastName = "";
 const ids = [];
@@ -217,38 +217,10 @@ function saveCookie() {
     document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
 }
 
-function readCookie() {
-    userId = -1;
-    let data = document.cookie;
-    let splits = data.split(",");
-
-    for (var i = 0; i < splits.length; i++) {
-
-        let thisOne = splits[i].trim();
-        let tokens = thisOne.split("=");
-
-        if (tokens[0] == "firstName") {
-            firstName = tokens[1];
-        }
-
-        else if (tokens[0] == "lastName") {
-            lastName = tokens[1];
-        }
-
-        else if (tokens[0] == "userId") {
-            userId = parseInt(tokens[1].trim());
-        }
-    }
-
-    if (userId < 0) {
-        window.location.href = "index.html";
-    }
-}
-
 function doLogin() {
-    userId = 0;
-    firstName = "";
-    lastName = "";
+    let token = "";
+    let firstName = "";
+    let lastName = "";
 
     let login = document.getElementById("loginName").value;
     let password = document.getElementById("loginPassword").value;
@@ -262,7 +234,7 @@ function doLogin() {
 
     let tmp = {
         login: login,
-        password: password 
+        password: password
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -281,12 +253,12 @@ function doLogin() {
                 console.log("Response:" + xhr.responseText);
                 let jsonObject = JSON.parse(xhr.responseText);
                 console.log("JSON parsed");
-                userId = jsonObject.id;
-                console.log(userId);
+                token = jsonObject.token;
+                console.log(token)
 
-                if (userId < 1) {
+                if (token === "") {
                     popError("User/Password combination incorrect");
-                    console.log("userID invalid: Invalid login?" );
+                    console.log("Token invalid: Invalid login?" );
                     return;
                 }
                 firstName = jsonObject.firstName;
@@ -351,11 +323,11 @@ function doSignup() {
             if (this.status == 200) {
 
                 let jsonObject = JSON.parse(xhr.responseText);
-                userId = jsonObject.id;
-                popError("User added");
-                firstName = jsonObject.firstName;
-                lastName = jsonObject.lastName;
-                saveCookie();
+                if (jsonObject.error != "") {
+                    popError(jsonObject.error);
+                    return;
+                }
+                popError("User added, you may now sign in.");
             }
         };
 

@@ -8,7 +8,7 @@
     $number = $inData["phoneNumber"];
     $email = $inData["email"];
     $note = $inData["notes"];
-    $userId = $inData["userId"];
+    $token = $inData["token"];
 
     if (strlen($first) == 0) {
         returnWithError("First name is required");
@@ -21,14 +21,10 @@
     }
     else
     {
-        $verifyUserExists = $connection->prepare("SELECT ID FROM Users WHERE ID = ?");
-        $verifyUserExists->bind_param("i", $userId);
-        $verifyUserExists->execute();
-        $verifyUserExists->store_result();
-        if ($verifyUserExists->num_rows < 1) {
-            returnWithError( "You are attempting to add a contact for a user that does not exist." );
+        $userId = getUserIdFromToken($connection, $token);
+        if (!$userId) {
+            returnWithError( "Your session has expired, please log in again." );
         }
-        $verifyUserExists->close();
 
         $statement = $connection->prepare("INSERT into Contacts (FirstName, LastName, Phone, Email, Notes, UserID) VALUES(?, ?, ?, ?, ?, ?)");
         $statement->bind_param("ssssss", $first, $last, $number, $email, $note, $userId);

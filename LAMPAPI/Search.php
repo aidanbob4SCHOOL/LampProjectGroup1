@@ -13,9 +13,14 @@
     } 
     else
     {
+        $userId = getUserIdFromToken($conn, $inData["token"]);
+        if (!$userId) {
+            returnWithError( "Your session has expired, please log in again." );
+        }
+
         $stmt = $conn->prepare("select ID, FirstName, LastName, Phone, Email, Notes from Contacts where (FirstName like ? or LastName like ? or Email like ? or Phone like ? or Notes like ?) and UserID=?"); // Prepare parameterized SQL to avoid injection.
         $searchParam = "%" . $inData["search"] . "%"; // Build search pattern with wildcards for LIKE.
-        $stmt->bind_param("ssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $inData["userId"]); // Bind string parameters: search pattern and userId.
+        $stmt->bind_param("ssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $userId); // Bind string parameters: search pattern and userId.
         $stmt->execute(); // Execute the prepared statement.
         
         $result = $stmt->get_result(); // Get result set from executed statement.
@@ -47,6 +52,7 @@
     {
         $retValue = '{"results":[],"error":"' . $err . '"}'; // Build an error JSON payload (fields present for client compatibility).
         sendResultInfoAsJson( $retValue ); // Send the JSON response.
+        exit();
     }
     
     function returnWithInfo( $searchResults )

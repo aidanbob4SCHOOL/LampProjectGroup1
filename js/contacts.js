@@ -1,4 +1,4 @@
-let userId = -1;
+let token = "";
 const urlBase = "https://springucfpoosdap.com/LAMPAPI"
 
 function readCookie() {
@@ -19,11 +19,11 @@ function readCookie() {
         }
 
         else if (tokens[0] === "userId") {
-            userId = parseInt(tokens[1].trim());
+            token = tokens[1];
         }
     }
 
-    if (userId < 0) {
+    if (token === "") {
         window.location.href = "login.html";
     }
 }
@@ -37,7 +37,7 @@ function searchContacts(searchQuery) {
 
     let tmp = {
         search: searchQuery,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -124,7 +124,7 @@ function addContact() {
         email: email,
         phoneNumber: phone,
         notes: notes,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -173,7 +173,7 @@ function editContact() {
         phone: phone,
         notes: notes,
         contactId: id,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -213,7 +213,7 @@ function deleteContact() {
 
     const tmp = {
         contactId: id,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);

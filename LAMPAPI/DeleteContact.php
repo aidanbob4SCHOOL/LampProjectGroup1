@@ -3,7 +3,7 @@
 
     $inData = getRequestInfo();
 
-	$userId = $inData["userId"];
+	$token = $inData["token"];
 	$contactID = $inData["contactId"];
 
 	// check for userID and contactID, if missing return with error
@@ -20,7 +20,10 @@
 	} 
 	else
 	{
-        // insert "do you want to delete this contact" confirmation here ?
+        $userId = getUserIdFromToken($conn, $token);
+        if (!$userId) {
+            returnWithError( "Your session has expired, please log in again." );
+        }
 
 		// deletes contact from database, set new values where userId and contactId matches
 		$stmt = $conn->prepare("DELETE FROM Contacts WHERE UserId=? AND ID=?");
@@ -52,5 +55,6 @@
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
+        exit();
 	}
 ?>
