@@ -211,8 +211,7 @@ body {
 #popup-content {
     background-color: #fefefe;
     margin: 10% auto;
-    /*padding: 20px;*/
-    width: 40%;
+    width: fit-content;
     border-radius: 20px;
 }
 
