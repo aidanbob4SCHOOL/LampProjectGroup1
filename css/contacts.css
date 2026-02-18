@@ -51,6 +51,7 @@ body {
     flex: 1;
     max-width: 1400px;
     padding: 40px 40px 80px;
+    margin: 0 auto;
 }
 
 .top-bar {
@@ -105,8 +106,14 @@ body {
 /* Grid For Contacts Tabs */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 30px;
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
 /* Contact Tab */
