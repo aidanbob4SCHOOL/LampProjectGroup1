@@ -1,9 +1,3 @@
-
-//temporary before landing page
-function goToLogin(){
-    window.location.href = "login.html";
-}
-
 //show/hide password
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
@@ -249,11 +243,6 @@ function readCookie() {
     if (userId < 0) {
         window.location.href = "index.html";
     }
-
-    else {
-        // Welcome User
-        // document.getElementById("userName").innerHTML = "Welcome, " + firstName + " " + lastName + "!";
-    }
 }
 
 function doLogin() {
@@ -264,9 +253,8 @@ function doLogin() {
     let login = document.getElementById("loginName").value;
     let password = document.getElementById("loginPassword").value;
 
-    //var hash = md5(password);
     if (!validLoginForm(login, password)) {
-        popError("invalid username or password");
+        popError("Invalid username or password");
         return;
     }
 
@@ -274,7 +262,7 @@ function doLogin() {
 
     let tmp = {
         login: login,
-        password: password //hash
+        password: password 
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -330,14 +318,13 @@ function doSignup() {
         return;
     }
 
-    //var hash = md5(password);
     clearError();
 
     let tmp = {
         firstName: firstName,
         lastName: lastName,
         login: username,
-        password: password //hash
+        password: password
     };
 
     let jsonPayload = JSON.stringify(tmp);
