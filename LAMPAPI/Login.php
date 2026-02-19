@@ -21,10 +21,12 @@
 		{
 			if (password_verify($inData["password"], $row['Password'])) 
 			{
+				$now = date('Y-m-d H:i:s');
 				$token = uniqid("", true);
-				$tokenWriter = $connection->prepare("UPDATE Users SET Token=? WHERE ID=?");
-				$tokenWriter->bind_param("ss", $token, $row['ID']);
+				$tokenWriter = $connection->prepare("UPDATE Users SET Token=?,TokenCreated=? WHERE ID=?");
+				$tokenWriter->bind_param("sss", $token, $now, $row['ID']);
 				$tokenWriter->execute();
+				$tokenWriter->close();
 
                 returnWithInfo($row['firstName'], $row['lastName'], $row['ID'], $token);
             } 

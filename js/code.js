@@ -204,17 +204,16 @@ passform.onkeyup = function () {
 const urlBase = 'https://springucfpoosdap.com/LAMPAPI';
 const extension = 'php';
 
-let userId = "";
 let firstName = "";
 let lastName = "";
 const ids = [];
 
-function saveCookie() {
+function saveCookie(firstName, lastName, token) {
     let minutes = 20;
     let date = new Date();
     date.setTime(date.getTime() + (minutes * 60 * 1000));
 
-    document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+    document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",token=" + token + ";expires=" + date.toGMTString();
 }
 
 function doLogin() {
@@ -264,7 +263,7 @@ function doLogin() {
                 firstName = jsonObject.firstName;
                 lastName = jsonObject.lastName;
 
-                saveCookie();
+                saveCookie(firstName, lastName, token);
                 window.location.href = "contacts.html";
                 console.log("href Changed to " + window.location.href);
             }
