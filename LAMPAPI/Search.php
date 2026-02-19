@@ -13,9 +13,9 @@
     } 
     else
     {
-        $stmt = $conn->prepare("select ID, FirstName, LastName, Phone, Email, Notes from Contacts where (FirstName like ? or LastName like ? or Email like ? or Phone like ? or Notes like ?) and UserID=?"); // Prepare parameterized SQL to avoid injection.
+        $stmt = $conn->prepare("select ID, FirstName, LastName, Phone, Email, Notes from Contacts where (FirstName like ? or LastName like ? or Email like ? or Phone like ? or Notes like ? or CONCAT(FirstName, ' ', LastName) like ?) and UserID=?"); // Prepare parameterized SQL to avoid injection.
         $searchParam = "%" . $inData["search"] . "%"; // Build search pattern with wildcards for LIKE.
-        $stmt->bind_param("ssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $inData["userId"]); // Bind string parameters: search pattern and userId.
+        $stmt->bind_param("sssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $inData["userId"]); // Bind string parameters: search pattern and userId.
         $stmt->execute(); // Execute the prepared statement.
         
         $result = $stmt->get_result(); // Get result set from executed statement.
