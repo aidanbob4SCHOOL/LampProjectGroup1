@@ -27,7 +27,7 @@
                 $searchResults .= ","; // Add comma between entries after the first.
             }
             $searchCount++; // Increment results counter.
-            $searchResults .= '{"id":"' . $row["ID"] . '","firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","phone":"' . $row["Phone"] . '","email":"' . $row["Email"] . '","notes":"' . $row["Notes"] . '"}'; // Append the contact fields as a quoted JSON string.
+            $searchResults .= '{"id":' . json_encode($row["ID"]) . ',"firstName":' . json_encode($row["FirstName"]) . ',"lastName":' . json_encode($row["LastName"]) . ',"phone":' . json_encode($row["Phone"]) . ',"email":' . json_encode($row["Email"]) . ',"notes":' . json_encode($row["Notes"]) . '}'; // Append the contact fields as a quoted JSON string.
         }
         
         if( $searchCount == 0 )

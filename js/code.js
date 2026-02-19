@@ -485,3 +485,17 @@ function clearError(){
 
 }
 
+function listenEnterKey() {
+    const inputFields = ["loginName", "loginPassword", "username", "password", "firstName", "lastName"];
+
+    for (const id of inputFields) {
+        const field = document.getElementById(id);
+        field.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                document.getElementById("loginButton").click();
+            }
+        })
+    }
+}
+
+listenEnterKey();
