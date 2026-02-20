@@ -269,6 +269,7 @@ function listenPopup() {
                 <input type="button" value="Add" id="contactFormSubmitButton" class="contactFormInput">
             </form>
         `
+        listenFormEnter();
         popup.style.display = "block";
 
         const closeButton = document.getElementById("close");
@@ -320,6 +321,7 @@ function listenPopup() {
                 <input type="button" value="Save" id="contactFormSubmitButton" class="contactFormInput">
             </form>
         `
+        listenFormEnter();
 
         const closeButton = document.getElementById("close");
         closeButton.addEventListener('click', () => {
@@ -373,6 +375,7 @@ function listenPopup() {
                 <input type="button" value="Delete" id="contactFormSubmitButton" class="contactFormInput invalid">
             </form>
         `
+        listenFormEnter();
 
         const closeButton = document.getElementById("close");
         closeButton.addEventListener('click', () => {
@@ -406,6 +409,19 @@ function listenLogout() {
     logoutLink.addEventListener('click', () => {
         document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
     })
+}
+
+function listenFormEnter() {
+    const inputFields = ["firstName", "lastName", "phone", "email", "notes"];
+
+    for (const id of inputFields) {
+        const field = document.getElementById(id);
+        field.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                document.getElementById("contactFormSubmitButton").click();
+            }
+        })
+    }
 }
 
 searchContacts("");

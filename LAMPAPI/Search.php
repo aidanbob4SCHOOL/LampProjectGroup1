@@ -18,9 +18,9 @@
             returnWithError( "Your session has expired, please log in again." );
         }
 
-        $stmt = $conn->prepare("select ID, FirstName, LastName, Phone, Email, Notes from Contacts where (FirstName like ? or LastName like ? or Email like ? or Phone like ? or Notes like ?) and UserID=?"); // Prepare parameterized SQL to avoid injection.
+        $stmt = $conn->prepare("select ID, FirstName, LastName, Phone, Email, Notes from Contacts where (FirstName like ? or LastName like ? or Email like ? or Phone like ? or Notes like ? or CONCAT(FirstName, ' ', LastName) like ?) and UserID=?"); // Prepare parameterized SQL to avoid injection.
         $searchParam = "%" . $inData["search"] . "%"; // Build search pattern with wildcards for LIKE.
-        $stmt->bind_param("ssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $userId); // Bind string parameters: search pattern and userId.
+        $stmt->bind_param("sssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $inData["userId"]); // Bind string parameters: search pattern and userId.
         $stmt->execute(); // Execute the prepared statement.
         
         $result = $stmt->get_result(); // Get result set from executed statement.
@@ -32,7 +32,7 @@
                 $searchResults .= ","; // Add comma between entries after the first.
             }
             $searchCount++; // Increment results counter.
-            $searchResults .= '{"id":"' . $row["ID"] . '","firstName":"' . $row["FirstName"] . '","lastName":"' . $row["LastName"] . '","phone":"' . $row["Phone"] . '","email":"' . $row["Email"] . '","notes":"' . $row["Notes"] . '"}'; // Append the contact fields as a quoted JSON string.
+            $searchResults .= '{"id":' . json_encode($row["ID"]) . ',"firstName":' . json_encode($row["FirstName"]) . ',"lastName":' . json_encode($row["LastName"]) . ',"phone":' . json_encode($row["Phone"]) . ',"email":' . json_encode($row["Email"]) . ',"notes":' . json_encode($row["Notes"]) . '}'; // Append the contact fields as a quoted JSON string.
         }
         
         if( $searchCount == 0 )

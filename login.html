@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>CoffeeChat - Login</title>
+    <title>CoffeeContacts - Login</title>
+    <meta name="description" content="The login page for CoffeeContacts.">
     <link rel="stylesheet" href="css/styles.css" />
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 </head>
@@ -10,8 +11,8 @@
 
 <header class="navbar">
     <div class="nav-left">
-        <img src="images/coffeelogo.png" class="logo" alt="CoffeeChat Logo" />
-        <h1>CoffeeChat</h1>
+        <img src="images/coffeelogo.png" class="logo" alt="CoffeeContacts Logo" />
+        <h1>CoffeeContacts</h1>
     </div>
 
     <nav class="nav-links">
@@ -22,7 +23,7 @@
     </nav>
 </header>
 
-<div class="auth-container">
+<main class="auth-container">
 
     <!-- Tabs -->
     <div class="tabs">
@@ -35,7 +36,7 @@
         <form class="form active" id="login">
             <input type="text" id="loginName" placeholder="Username" required maxlength="30"/>
             <input type="password" id="loginPassword" placeholder="Password" required maxlength="50"/>
-            <img src="images/hide_password.png" width="6%" height="6%" id="togglePasswordLogin" class="toggle">
+            <img src="images/hide_password.png" width="6%" id="togglePasswordLogin" class="toggle" alt="Show/Hide Password">
             <button type="button" class="submit-btn" id="loginButton" onclick="doLogin()">Login</button>
         </form>
 
@@ -44,7 +45,7 @@
             <input type="text" placeholder="Last Name" id="lastName" required/>
             <input type="text" placeholder="Username" id="username" required pattern="^(?=.*[A-Za-z0-9])[A-Za-z0-9_\-]{2,30}$" minlength="2" maxlength="30" title="Must be between 2-30 characters and can only contain letters, numbers, underscores, and hyphens"/>
             <input type="password" placeholder="Password" id="password" required pattern="(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{8,32}" minlength="8" maxlength="32" title="Must be between 8-32 characters and must contain at least one number and one special character"/>
-            <img src="images/hide_password.png" width="6%" height="6%" id="togglePassword" class="toggle">
+            <img src="images/hide_password.png" width="6%" id="togglePassword" class="toggle" alt="Show/Hide Password">
             <button type="button" class="submit-btn" id="signupButton" onclick="doSignup()">Signup</button>
         </form>
     </div>
@@ -87,10 +88,10 @@
         </p>
     </div>
 
-</div>
+</main>
 
 <!-- Footer -->
-<footer class="footer">2026 CoffeeChat - Built for lasting connections</footer>
+<footer class="footer">2026 CoffeeContacts - Built for lasting connections</footer>
 
 </body>
 </html>
