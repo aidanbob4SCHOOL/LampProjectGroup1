@@ -18,79 +18,68 @@
     <nav class="nav-links">
         <a href="landing.html">Home</a>
         <a href="contacts.html">Contacts</a>
-        <a href="#">About Us</a>
+        <a href="about.html">About Us</a>
         <a href="login.html">Login</a>
     </nav>
 </header>
 
 <main class="auth-container">
-
-    <!-- Tabs -->
-    <div class="tabs">
-        <button class="tab active" data-target="login">Login</button>
-        <button class="tab" data-target="signup">Signup</button>
+    <div class="auth-card" id="authCard">
+        <div class="tabs">
+            <span class="tab-indicator" id="tabIndicator"></span>
+            <button class="tab active" data-target="login">Login</button>
+            <button class="tab" data-target="signup">Signup</button>
+        </div>
+        <div class="card-body">
+            <form class="form" id="login">
+                <input type="text" id="loginName" placeholder="Username" required maxlength="30"/>
+                <div class="input-wrap">
+                    <input type="password" id="loginPassword" placeholder="Password" required maxlength="50"/>
+                    <button type="button" class="toggle toggle-password" id="togglePasswordLogin" aria-label="Toggle password visibility">
+                        <svg class="icon-eye" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="icon-eye-off" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                </div>
+                <button type="button" class="submit-btn" id="loginButton" onclick="doLogin()">Login</button>
+            </form>
+            <form class="form" id="signup">
+                <input type="text" placeholder="First Name" id="firstName" required/>
+                <input type="text" placeholder="Last Name" id="lastName" required/>
+                <input type="text" placeholder="Username" id="username" required pattern="^(?=.*[A-Za-z0-9])[A-Za-z0-9_\-]{2,30}$" minlength="2" maxlength="30" title="Must be between 2-30 characters and can only contain letters, numbers, underscores, and hyphens"/>
+                <div class="input-wrap">
+                    <input type="password" placeholder="Password" id="password" required pattern="(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{8,32}" minlength="8" maxlength="32" title="Must be between 8-32 characters and must contain at least one number and one special character"/>
+                    <button type="button" class="toggle toggle-password" id="togglePassword" aria-label="Toggle password visibility">
+                        <svg class="icon-eye" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="icon-eye-off" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                </div>
+                <button type="button" class="submit-btn" id="signupButton" onclick="doSignup()">Signup</button>
+            </form>
+        </div>
     </div>
 
-        <!-- Card -->
-    <div class="card">
-        <form class="form active" id="login">
-            <input type="text" id="loginName" placeholder="Username" required maxlength="30"/>
-            <input type="password" id="loginPassword" placeholder="Password" required maxlength="50"/>
-            <img src="images/hide_password.png" width="6%" id="togglePasswordLogin" class="toggle" alt="Show/Hide Password">
-            <button type="button" class="submit-btn" id="loginButton" onclick="doLogin()">Login</button>
-        </form>
-
-        <form class="form" id="signup">
-            <input type="text" placeholder="First Name" id="firstName" required/>
-            <input type="text" placeholder="Last Name" id="lastName" required/>
-            <input type="text" placeholder="Username" id="username" required pattern="^(?=.*[A-Za-z0-9])[A-Za-z0-9_\-]{2,30}$" minlength="2" maxlength="30" title="Must be between 2-30 characters and can only contain letters, numbers, underscores, and hyphens"/>
-            <input type="password" placeholder="Password" id="password" required pattern="(?=.*\d)(?=.*[A-Za-z])(?=.*[!@#$%^&*]).{8,32}" minlength="8" maxlength="32" title="Must be between 8-32 characters and must contain at least one number and one special character"/>
-            <img src="images/hide_password.png" width="6%" id="togglePassword" class="toggle" alt="Show/Hide Password">
-            <button type="button" class="submit-btn" id="signupButton" onclick="doSignup()">Signup</button>
-        </form>
-    </div>
-    
-     <!--Result Info Box-->
     <div class="result" id="result">
         <span class="text" style="color:rgb(203, 21, 21); font-family: 'Montserrat';" id="resultInfo"></span>
     </div>
-    
+
     <div class="explanation" id="explanation">
         <h3>Password must contain the following:</h3>
-        <p id="passLen" class="invalid">
-          8 to 32 characters
-        </p>
-        <p id="passLett" class="invalid">
-          At least one letter
-        </p>
-        <p id="passNum" class="invalid">
-          At least one number
-        </p>
-        <p id="passSpec" class="invalid">
-          At least one special character
-        </p>
+        <p id="passLen" class="invalid">8 to 32 characters</p>
+        <p id="passLett" class="invalid">At least one letter</p>
+        <p id="passNum" class="invalid">At least one number</p>
+        <p id="passSpec" class="invalid">At least one special character</p>
     </div>
 
     <div class="explanationUser" id="explanationUser">
         <h4>Username must contain the following:</h4>
-        <p id="userLen" class="invalid">
-          2 to 30 characters
-        </p>
-        <h4> Username may contain the following: </h4>
-        <p id="userLett" class="opt">
-          Letters and Numbers
-        </p>
-        <p id="userUnd" class="opt">
-          Underscores
-        </p>
-        <p id="userHyp" class="opt">
-          Hyphens
-        </p>
+        <p id="userLen" class="invalid">2 to 30 characters</p>
+        <h4>Username may contain the following:</h4>
+        <p id="userLett" class="opt">Letters and Numbers</p>
+        <p id="userUnd" class="opt">Underscores</p>
+        <p id="userHyp" class="opt">Hyphens</p>
     </div>
-
 </main>
 
-<!-- Footer -->
 <footer class="footer">2026 CoffeeContacts - Built for lasting connections</footer>
 
 </body>

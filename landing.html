@@ -41,6 +41,12 @@
             gap: 3rem;
             flex-wrap: wrap;
             font-family: "Poppins", sans-serif;
+            animation: heroFadeIn 0.55s ease both;
+        }
+
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero-text {
@@ -72,7 +78,7 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-decoration: none;
         }
 
@@ -82,8 +88,8 @@
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.95;
+            transform: scale(1.02);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
         }
 
         .contact-preview {
@@ -114,6 +120,13 @@
             border-radius: 20px;
             transform: translateY(-40px);
             color: var(--coffee-dark);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .feature:hover {
+            transform: translateY(-44px);
+            box-shadow: 0 14px 32px rgba(0,0,0,0.14);
         }
 
         .feature h4 {
@@ -133,7 +146,7 @@
     <nav class="nav-links">
         <a href="landing.html">Home</a>
         <a href="contacts.html">Contacts</a>
-        <a href="#">About Us</a>
+        <a href="about.html">About Us</a>
         <a href="login.html">Login</a>
     </nav>
 </header>

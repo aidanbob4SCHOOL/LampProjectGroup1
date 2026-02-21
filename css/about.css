@@ -1,0 +1,93 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.about-main {
+  flex: 1 1 auto;
+  background: #EFE5DB;
+  padding: 4rem 2rem 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 2.5rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  align-items: center;
+  justify-items: center;
+}
+
+.team-grid .team-member:nth-child(1) { grid-column: 2; grid-row: 1; }
+.team-grid .team-member:nth-child(2) { grid-column: 4; grid-row: 1; }
+.team-grid .team-member:nth-child(3) { grid-column: 1; grid-row: 2; }
+.team-grid .team-member:nth-child(4) { grid-column: 3; grid-row: 2; }
+.team-grid .team-member:nth-child(5) { grid-column: 5; grid-row: 2; }
+.team-grid .team-member:nth-child(6) { grid-column: 2; grid-row: 3; }
+.team-grid .team-member:nth-child(7) { grid-column: 4; grid-row: 3; }
+
+.team-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: memberFadeIn 0.5s ease both;
+}
+
+.team-member:nth-child(1) { animation-delay: 0s; }
+.team-member:nth-child(2) { animation-delay: 0.07s; }
+.team-member:nth-child(3) { animation-delay: 0.14s; }
+.team-member:nth-child(4) { animation-delay: 0.21s; }
+.team-member:nth-child(5) { animation-delay: 0.28s; }
+.team-member:nth-child(6) { animation-delay: 0.35s; }
+.team-member:nth-child(7) { animation-delay: 0.42s; }
+
+@keyframes memberFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headshot {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: #CB3E57;
+  flex-shrink: 0;
+}
+
+.member-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2b241c;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .team-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 2rem;
+  }
+  .team-grid .team-member:nth-child(1),
+  .team-grid .team-member:nth-child(2),
+  .team-grid .team-member:nth-child(3),
+  .team-grid .team-member:nth-child(4),
+  .team-grid .team-member:nth-child(5),
+  .team-grid .team-member:nth-child(6),
+  .team-grid .team-member:nth-child(7) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}

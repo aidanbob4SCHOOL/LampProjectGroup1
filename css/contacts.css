@@ -116,17 +116,47 @@ body {
     max-width: 1200px;
 }
 
-/* Contact Tab */
 .contact-card {
     background: white;
     border-radius: 20px;
     overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: cardFadeIn 0.45s ease both;
+}
+
+.contact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+.contact-card:nth-child(1) { animation-delay: 0s; }
+.contact-card:nth-child(2) { animation-delay: 0.06s; }
+.contact-card:nth-child(3) { animation-delay: 0.12s; }
+.contact-card:nth-child(4) { animation-delay: 0.18s; }
+.contact-card:nth-child(5) { animation-delay: 0.24s; }
+.contact-card:nth-child(6) { animation-delay: 0.3s; }
+.contact-card:nth-child(7) { animation-delay: 0.36s; }
+.contact-card:nth-child(8) { animation-delay: 0.42s; }
+.contact-card:nth-child(9) { animation-delay: 0.48s; }
+.contact-card:nth-child(n+10) { animation-delay: 0.54s; }
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .card-top {
     height: 50px;
-    background: #4caf82;
+    background: linear-gradient(135deg, #009345 0%, #4caf82 100%);
     border-radius: 20px 20px 0 0;
+    box-shadow: 0 2px 8px rgba(0, 147, 69, 0.25);
+    border-bottom: 2px solid rgba(0, 147, 69, 0.4);
 }
 
 .card-body {
@@ -168,6 +198,13 @@ body {
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
 }
 
 .edit-btn {

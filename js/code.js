@@ -1,60 +1,36 @@
-//show/hide password
 const togglePassword = document.querySelector('#togglePassword');
 const password = document.querySelector('#password');
-
-togglePassword.addEventListener('click', function (e) {
-    // Toggle the type attribute 
-    const type = password.getAttribute(
-        'type') === 'password' ? 'text': 'password';
-    password.setAttribute('type', type);
-
-    // Toggle the eye slash icon 
-    if (togglePassword.src.match("../images/hide_password.png")) {
-        togglePassword.src ="../images/show_password.png";
-    } else {
-        togglePassword.src ="../images/hide_password.png";
-    }
-}); 
-
 const togglePasswordLogin = document.querySelector('#togglePasswordLogin');
 const loginPassword = document.querySelector('#loginPassword');
 
-togglePasswordLogin.addEventListener('click', function (e) {
-    // Toggle the type attribute 
-    const type = loginPassword.getAttribute(
-        'type') === 'password' ? 'text' : 'password';
-    loginPassword.setAttribute('type', type);
+function setPasswordVisibility(inputEl, buttonEl, visible) {
+    inputEl.setAttribute('type', visible ? 'text' : 'password');
+    buttonEl.classList.toggle('visible', visible);
+}
 
-    // Toggle the eye slash icon 
-    if (togglePasswordLogin.src.match("../images/hide_password.png")) {
-        togglePasswordLogin.src ="../images/show_password.png";
-    } else {
-        togglePasswordLogin.src ="../images/hide_password.png";
-    }
-}); 
+togglePassword.addEventListener('click', function () {
+    const isPass = password.getAttribute('type') === 'password';
+    setPasswordVisibility(password, togglePassword, isPass);
+});
 
-//Login Page Function (Switch between Login and Signup)
+togglePasswordLogin.addEventListener('click', function () {
+    const isPass = loginPassword.getAttribute('type') === 'password';
+    setPasswordVisibility(loginPassword, togglePasswordLogin, isPass);
+});
+
 const tabs = document.querySelectorAll(".tab");
-const forms = document.querySelectorAll(".form");
+const authCard = document.getElementById("authCard");
 
 tabs.forEach(tab => {
     tab.addEventListener("click", () => {
-        const target = tab.dataset.target;
-        togglePassword.src ="../images/hide_password.png";
-        password.setAttribute('type', 'password');
-        togglePasswordLogin.src ="../images/hide_password.png";
-        loginPassword.setAttribute('type', 'password');
+        setPasswordVisibility(password, togglePassword, false);
+        setPasswordVisibility(loginPassword, togglePasswordLogin, false);
 
-        // Tabs
         tabs.forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
+        authCard.classList.toggle("show-signup", tab.dataset.target === "signup");
 
         clearError();
-
-        // Forms
-        forms.forEach(form => {
-            form.classList.toggle("active", form.id === target);
-        });
     });
 });
 
@@ -233,7 +209,7 @@ function doLogin() {
 
     let tmp = {
         login: login,
-        password: password
+        password: password 
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -247,25 +223,25 @@ function doLogin() {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     try {
         xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                
+            if (this.readyState != 4) return;
+            if (this.status == 200) {
                 console.log("Response:" + xhr.responseText);
                 let jsonObject = JSON.parse(xhr.responseText);
-                console.log("JSON parsed");
                 token = jsonObject.token;
-                console.log(token)
-
                 if (token === "") {
                     popError("User/Password combination incorrect");
-                    console.log("Token invalid: Invalid login?" );
                     return;
                 }
                 firstName = jsonObject.firstName;
                 lastName = jsonObject.lastName;
-
                 saveCookie(firstName, lastName, token);
                 window.location.href = "contacts.html";
-                console.log("href Changed to " + window.location.href);
+                return;
+            }
+            if (this.status == 0) {
+                popError("Request blocked. If you're on localhost, the API may not allow requests from this origin (CORS).");
+            } else {
+                popError("Login failed (server error or invalid response).");
             }
         };
 
