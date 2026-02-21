@@ -3,8 +3,8 @@
 
     $inData = getRequestInfo();
 
-	$userId = $inData["userId"]; # REFERS TO USER IN USER TABLE
-	$contactID = $inData["contactId"]; # REFERS TO AUTO INCREMENTING ID
+	$token = $inData["token"]; # REFERS TO USER TOKEN IN USER TABLE
+	$contactID = $inData["contactId"]; # REFERS TO AUTO INCREMENTING ID IN CONTACT TABLE
 
 	$firstName = $inData["firstName"];
 	$lastName = $inData["lastName"];
@@ -12,9 +12,9 @@
 	$phone = $inData["phone"];
     $notes = $inData["notes"];
 
-	// check for userID and contactID, if missing return with error
-	if(empty($userId) || empty($contactID)) {
-		returnWithError("User ID and Contact ID are required.");
+	// check for token and contactID, if missing return with error
+	if(empty($token) || empty($contactID)) {
+		returnWithError("Token and Contact ID are required.");
 	}
 
 	// ensure user must provide all required fields to update contact
@@ -30,6 +30,11 @@
 	} 
 	else
 	{
+        $userId = getUserIdFromToken($conn, $token);
+        if (!$userId) {
+            returnWithError( "Your session has expired, please log in again." );
+        }
+
 		// update contacts database, set new values where userId and contactId matches
 		$stmt = $conn->prepare("UPDATE Contacts SET FirstName=?, LastName=?, Email=?, Phone=?, Notes=? WHERE UserId=? AND ID=?");
 		$stmt->bind_param("sssssii", $firstName, $lastName, $email, $phone, $notes, $userId, $contactID);
@@ -61,6 +66,7 @@
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
+        exit();
 	}
 
     function returnWithInfo( $firstName, $lastName, $id )

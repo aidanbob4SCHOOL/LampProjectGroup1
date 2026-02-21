@@ -1,4 +1,4 @@
-let userId = -1;
+let token = "";
 const urlBase = "https://springucfpoosdap.com/LAMPAPI"
 
 function readCookie() {
@@ -18,12 +18,12 @@ function readCookie() {
             lastName = tokens[1];
         }
 
-        else if (tokens[0] === "userId") {
-            userId = parseInt(tokens[1].trim());
+        else if (tokens[0] === "token") {
+            token = tokens[1];
         }
     }
 
-    if (userId < 0) {
+    if (token === "") {
         window.location.href = "login.html";
     }
 }
@@ -37,7 +37,7 @@ function searchContacts(searchQuery) {
 
     let tmp = {
         search: searchQuery,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -51,6 +51,12 @@ function searchContacts(searchQuery) {
         xhr.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 const response = JSON.parse(xhr.responseText);
+
+                if (response.error !== "") {
+                    console.error(response.error);
+                    window.location.href = "login.html";
+                }
+
                 for (let contact of response.results) {
                     if (contact.lastName === "") {
                         contact.lastName = "";
@@ -124,7 +130,7 @@ function addContact() {
         email: email,
         phoneNumber: phone,
         notes: notes,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -139,7 +145,8 @@ function addContact() {
             if (this.readyState === 4 && this.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 if (response.error !== "") {
-                    console.error(response.error)
+                    console.error(response.error);
+                    window.location.href = "login.html";
                 }
                 document.getElementById("popup").style.display = "none";
                 firstName.value = "";
@@ -173,7 +180,7 @@ function editContact() {
         phone: phone,
         notes: notes,
         contactId: id,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -188,7 +195,8 @@ function editContact() {
             if (this.readyState === 4 && this.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 if (response.error !== "") {
-                    console.error(response.error)
+                    console.error(response.error);
+                    window.location.href = "login.html";
                 }
                 document.getElementById("popup").style.display = "none";
                 id.value = "";
@@ -213,7 +221,7 @@ function deleteContact() {
 
     const tmp = {
         contactId: id,
-        userId: userId
+        token: token
     };
 
     let jsonPayload = JSON.stringify(tmp);

@@ -21,7 +21,14 @@
 		{
 			if (password_verify($inData["password"], $row['Password'])) 
 			{
-                returnWithInfo($row['firstName'], $row['lastName'], $row['ID']);
+				$now = date('Y-m-d H:i:s');
+				$token = uniqid("", true);
+				$tokenWriter = $connection->prepare("UPDATE Users SET Token=?,TokenCreated=? WHERE ID=?");
+				$tokenWriter->bind_param("sss", $token, $now, $row['ID']);
+				$tokenWriter->execute();
+				$tokenWriter->close();
+
+                returnWithInfo($row['firstName'], $row['lastName'], $row['ID'], $token);
             } 
 			else 
 			{
@@ -39,13 +46,14 @@
 
 	function returnWithError($error )
 	{
-		$returnValue = '{"id":0,"firstName":"","lastName":"","error":"' . $error . '"}';
+		$returnValue = '{"id":0,"firstName":"","lastName":"","token":"","error":"' . $error . '"}';
 		sendResultInfoAsJson( $returnValue );
+		exit();
 	}
 	
-	function returnWithInfo( $firstName, $lastName, $id )
+	function returnWithInfo( $firstName, $lastName, $id, $token)
 	{
-		$returnValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+		$returnValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","token":"' . $token . '","error":""}';
 		sendResultInfoAsJson( $returnValue );
 	}
 	
