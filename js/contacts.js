@@ -52,7 +52,7 @@ function searchContacts(searchQuery) {
             if (this.readyState === 4 && this.status === 200) {
                 const response = JSON.parse(xhr.responseText);
 
-                if (response.error !== "") {
+                if (response.error.includes("session")) {
                     console.error(response.error);
                     window.location.href = "login.html";
                 }
@@ -154,7 +154,7 @@ function addContact() {
                 email.value = "";
                 phone.value = "";
                 notes.value = "";
-                searchContacts("");
+                searchContacts(document.getElementById("searchText").value);
             }
         };
 

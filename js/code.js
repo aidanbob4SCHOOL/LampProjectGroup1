@@ -185,7 +185,7 @@ let lastName = "";
 const ids = [];
 
 function saveCookie(firstName, lastName, token) {
-    let minutes = 20;
+    let minutes = 60;
     let date = new Date();
     date.setTime(date.getTime() + (minutes * 60 * 1000));
 

@@ -252,6 +252,10 @@ body {
     border-radius: 20px;
 }
 
+#popup-content > .card-body {
+    min-height: 0;
+}
+
 #close {
     color: #aaa;
     float: right;
